@@ -60,4 +60,34 @@ class Pessoa {
             return false;
         }
     }
+	
+	// atualizar o objeto pessoa
+    function atualizar() {
+		
+        // query update
+        $query = "UPDATE
+                " . $this->table_name . "
+            SET
+                pessoa_nome = :nome
+            WHERE
+                pessoa_id = :id";
+ 
+        // prepared statement
+        $stmt = $this->conn->prepare($query);
+ 
+        // higienização de caracteres especiais
+        $this->nome = htmlspecialchars(strip_tags($this->nome));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+ 
+        // bind de parâmetros
+        $stmt->bindParam(':nome', $this->nome);
+        $stmt->bindParam(':id', $this->id);
+ 
+        // execute query
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
