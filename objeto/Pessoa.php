@@ -90,4 +90,27 @@ class Pessoa {
             return false;
         }
     }
+	
+	// deleta o objeto pessoa
+    function deletar() {
+		
+        // query delete
+        $query = "DELETE FROM " . $this->table_name . " WHERE pessoa_id = ?";
+ 
+        // prepared statement
+        $stmt = $this->conn->prepare($query);
+ 
+        // higienização de caracteres especiais
+        $this->id = htmlspecialchars(strip_tags($this->id));
+ 
+        // bind do id do registro a ser deletado
+        $stmt->bindParam(1, $this->id);
+ 
+        // execute query
+        if ($stmt->execute()) {
+            return true;
+        }
+ 
+        return false;
+    }
 }
